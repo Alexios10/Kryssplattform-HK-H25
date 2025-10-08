@@ -9,6 +9,7 @@ export type PostProps = {
 
 export default function Post({ postData }: PostProps) {
   return (
+    // Hver Post er en Pressable komponent som navigerer til post-detaljer-siden når den trykkes på
     <Pressable
       onPress={() =>
         router.push({
@@ -18,6 +19,7 @@ export default function Post({ postData }: PostProps) {
       }
     >
       <View style={styles.postContainer}>
+        {/* Post bilde */}
         <Image
           accessible={true}
           accessibilityLabel="Post image, navigate to post details"
@@ -25,6 +27,8 @@ export default function Post({ postData }: PostProps) {
           style={styles.postImage}
           source={{ uri: postData.imageUri }}
         />
+
+        {/* Post tittel og beskrivelse */}
         <View style={styles.textContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.postTitle}>{postData.title}</Text>

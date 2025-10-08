@@ -38,6 +38,7 @@ export default function PostFormModal({
     null
   );
 
+  // Funksjon for å hente lokasjon
   async function getLocation() {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -62,6 +63,7 @@ export default function PostFormModal({
 
   return (
     <Modal transparent visible={isVisible} animationType="slide">
+      {/* Kamera modal */}
       <Modal visible={isCameraOpen}>
         <SelectImageModal
           closeModal={() => setIsCameraOpen(false)}
@@ -71,6 +73,8 @@ export default function PostFormModal({
           }} // Her sendes uri til bildet (filsti til hvor bildet er lagret) og settes i image state
         />
       </Modal>
+
+      {/* Kamera forhåndsvisning */}
       <View style={styles.modalVisible}>
         <Pressable
           onPress={() => setIsCameraOpen(true)}
@@ -93,6 +97,8 @@ export default function PostFormModal({
             <EvilIcons name="image" size={80} color="black" /> // Hvis ikke viser vi ikonet som vanlig
           )}
         </Pressable>
+
+        {/* Lokasjonsinformasjon */}
         <View style={{ marginTop: 8, marginBottom: 16 }}>
           {location ? (
             <Text>{`${location.name} - ${location.city}, ${location.country}`}</Text>
@@ -100,6 +106,8 @@ export default function PostFormModal({
             <Text>{locationPlaceholderText}</Text>
           )}
         </View>
+
+        {/* Tekstinput for tittel og beskrivelse */}
         <View style={styles.textInputContainer}>
           <TextInput
             style={styles.textInput}
@@ -114,21 +122,22 @@ export default function PostFormModal({
             onChangeText={setDescText}
           />
         </View>
+
+        {/* Knapp for å legge til innlegg */}
         <View style={styles.buttonContainer}>
           <Pressable
             style={[styles.button, { borderWidth: 2, borderColor: "gray" }]}
             onPress={() => {
               if (image) {
                 const newPost: PostData = {
-                  id: titleText + descText,
+                  // Midlertidig id lokalt; Firestore setter ekte id
+                  id: `${Date.now()}`,
                   title: titleText,
                   description: descText,
                   imageUri: image,
                   comments: [],
                   postCoordinates: postCoordinatesData.current,
                 };
-                console.log(newPost);
-                // Huske å fjerne innholdet i tekstinput så vi får en ny start neste gang vi vil lage et innlegg
                 addPost(newPost);
                 setTitleText("");
                 setDescText("");

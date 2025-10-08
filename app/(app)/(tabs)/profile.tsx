@@ -12,12 +12,12 @@ export default function ProfilePage() {
       <Text>Her er profilsiden!</Text>
       {userNameSession !== null && <Text>Hei på deg {userNameSession}</Text>}
       <Text>
-        Trykk{" "}
+        Trykk
         {
           <Link style={style.link} href={"/declarations"}>
             her
           </Link>
-        }{" "}
+        }
         for informasjon om appen
       </Text>
       <View style={style.textInputContainer}>

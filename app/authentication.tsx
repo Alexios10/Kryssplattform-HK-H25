@@ -9,6 +9,7 @@ const Authentication = () => {
 
   const [isSignUp, setIsSignUp] = useState(false);
 
+  // Context for authentication
   const { signIn } = useAuthSession();
 
   return (
@@ -63,9 +64,10 @@ const Authentication = () => {
               textDecorationLine: "underline",
             }}
           >
-            {isSignUp ? "Registrering" : "Innlogging"}
+            {isSignUp ? "Innlogging" : "Registrering"}
           </Text>
         </Pressable>
+
         <View style={styles.buttonContainer}>
           <Pressable
             style={styles.primaryButton}

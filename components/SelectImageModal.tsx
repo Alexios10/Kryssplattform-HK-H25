@@ -15,10 +15,12 @@ export default function SelectImageModal({
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
 
+  // Hvis vi ikke har sjekket tillatelsen ennå, returner en tom View
   if (!permission) {
     return <View />;
   }
 
+  // Hvis vi ikke har tillatelse til å bruke kameraet, vis en melding og en knapp for å be om tillatelse
   if (!permission.granted) {
     return (
       <View style={styles.container}>
@@ -28,6 +30,7 @@ export default function SelectImageModal({
     );
   }
 
+  // Funksjon for å åpne bildegalleriet og velge et bilde
   async function pickImage() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
@@ -42,6 +45,7 @@ export default function SelectImageModal({
     }
   }
 
+  // Funksjon for å ta et bilde med kameraet
   async function captureImage() {
     if (cameraRef.current) {
       const image = await cameraRef.current.takePictureAsync();
@@ -53,6 +57,7 @@ export default function SelectImageModal({
   }
 
   return (
+    // Kamera forhåndsvisning
     <View style={styles.container}>
       <CameraView style={styles.camera} facing="back" ref={cameraRef} />
       <View style={styles.buttonContainer}>

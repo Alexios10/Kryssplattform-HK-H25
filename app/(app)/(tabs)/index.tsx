@@ -13,12 +13,14 @@ export default function HomeScreen() {
   const [posts, setPosts] = useState<PostData[]>([]);
   const { userNameSession } = useAuthSession();
 
+  // Legger til et nytt innlegg i local storage og i state
   async function createPostLocal(newPost: PostData) {
     const updatedPostList = [...posts, newPost];
     storeData("postStore", JSON.stringify(updatedPostList));
     setPosts(updatedPostList);
   }
 
+  // Henter innlegg fra local storage
   async function getPostsFromLocal() {
     const exisitngPosts = await getData("postStore");
     if (exisitngPosts) {
@@ -26,6 +28,7 @@ export default function HomeScreen() {
     }
   }
 
+  // Henter innlegg når siden lastes
   useEffect(() => {
     getPostsFromLocal();
   }, []);

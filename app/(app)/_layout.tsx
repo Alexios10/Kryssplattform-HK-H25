@@ -15,6 +15,7 @@ export default function RootLayout() {
     );
   }
 
+  // Hvis ikke innlogget, send til login
   if (!userNameSession) {
     return <Redirect href={"/authentication"} />;
   }

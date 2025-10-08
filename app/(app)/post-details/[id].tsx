@@ -15,15 +15,21 @@ import {
 import MapView, { Callout, Marker } from "react-native-maps";
 
 export default function PostDetailsPage() {
+  // Henter id fra urlen (eks: /post-details/123 -> id = 123)
   const { id } = useLocalSearchParams<{ id: string }>();
+
+  // Henter brukernavn fra session
   const { userNameSession } = useAuthSession();
 
   const [post, setPost] = useState<PostData | null>(null);
   const [commentText, setCommentText] = useState("");
 
+  // Henter innlegget fra local storage basert på id
   async function fetchPostFromLocal(inputId: string) {
     await new Promise((resolve) => setTimeout(resolve, 500));
     const postLocal = await getPostByLocalId(inputId);
+
+    // Sjekker om postLocal ikke er null eller undefined
     if (postLocal) {
       setPost(postLocal);
     }
@@ -33,6 +39,7 @@ export default function PostDetailsPage() {
     fetchPostFromLocal(id);
   }, [id]);
 
+  // Viser en loader mens innlegget hentes
   if (post === null) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -48,12 +55,16 @@ export default function PostDetailsPage() {
       }}
     >
       <Image style={styles.imageStyle} source={{ uri: post.imageUri }} />
+
+      {/* Post tittel og beskrivelse */}
       <View style={styles.contentContainer}>
         <Text style={styles.titleStyle}>{post.title}</Text>
         <Text style={[styles.textStyle, { paddingTop: 6 }]}>
           {post.description}
         </Text>
       </View>
+
+      {/* Kommentarer container */}
       <View style={styles.commentsContainer}>
         <Text style={styles.commentTitle}>Kommentarer</Text>
         <View style={styles.commentsList}>
@@ -91,12 +102,10 @@ export default function PostDetailsPage() {
                 comment: commentText,
                 author: userNameSession ?? "Dette skal ikke skje",
               });
-              // Dette kalles "object spread operator" og er en metode for å kopiere et object samtidig som man endrer en eller flere av verdiene
               const updatedPost: PostData = {
                 ...post,
                 comments: postComments,
               };
-              // cmd+click for å se hvor funksjonen er definert, den ligger under local-storage.tsx
               updatePostById(id, updatedPost);
               setPost(updatedPost);
               setCommentText("");
@@ -106,6 +115,8 @@ export default function PostDetailsPage() {
           </Pressable>
         </View>
       </View>
+
+      {/* Kartvisning */}
       <View
         style={{
           paddingHorizontal: 16,
